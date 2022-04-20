@@ -1,0 +1,37 @@
+gamma max:2.0
+step size max:10.0
+neighborhood max:15
+threshold max:200
+record  12-Bit images:0
+scroll faktor:1.0
+scroll step size int:1
+scroll step size float:0.01
+symmetry center x:487.5
+symmetry center y:321.5
+sample name:Sample_1
+voltage:20
+current:30
+distance:40.0
+comment:comment
+normal bg-remove:0
+remove dark-current:1
+auto delta for polyfit:40
+auto increment for polyfit:40
+auto bg-remove during raster:0
+calculate max exposure during raster:1
+enable raster on kontur:0
+threshold for kontur-raster:5.0
+center detection during raster:0
+search width for center detection:41
+search height for center detection:41
+search x offset for center detection:0
+search y offset for center detection:0
+linewidth for center detection:10
+starting angle for center detection:0
+number of lines:6
+save info images during center detection:0
+display offset:5
+minimum distance:2
+maximum distance:20
+maximum sigma:15
+size gaus-check:11
