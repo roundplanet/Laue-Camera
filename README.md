@@ -5,7 +5,7 @@ This project was coded to simplify the usage of a backscattered Laue Camera from
  from the University of Augsburg. The NTX Software unfortunatly only runs at a 
  Windows 7 system and furthermore the setup includes four electrical 
  stepping motors controllable by a raspberry pi for rotating and translating the sample. 
- Therefore a comunication network was implemented to supervise all actions at a Linux 
+ Therefore a comunication network was implemented to supervise all actions on a Linux 
  computer, for which this code was written. 
 
 
