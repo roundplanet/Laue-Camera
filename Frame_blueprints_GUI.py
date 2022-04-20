@@ -4,6 +4,8 @@
 Created on Fri Nov  5 11:07:23 2021
 
 @author: Julian Kaiser
+
+Documentation is completed!
 """
 
 import tkinter as tk
