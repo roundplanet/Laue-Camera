@@ -3803,7 +3803,7 @@ class Window_App():
             arr[arr > max_value] = max_value
             arr = arr**gamma * faktor
             
-            bg_remove_thread = abf.AsyncBgRemove(arr, self.console, self)
+            bg_remove_thread = abf.AsyncBgRemove(arr, self)
             bg_remove_thread.start()
             
             self.monitor_bg_remove_thread(bg_remove_thread)

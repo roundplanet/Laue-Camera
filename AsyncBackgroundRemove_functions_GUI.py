@@ -9,7 +9,6 @@ import cv2
 import numpy as np
 from threading import Thread
 import time
-import tkinter as tk
 
 import matplotlib.pyplot as plt
 
@@ -18,9 +17,32 @@ import Basicfunctions_GUI as bsf
 
 
 class AsyncBgRemove(Thread):
+    """
+    AsyncBgRemove(image, window_app)
+    
+    A class for a Thread from threading, which manages the background removal from the corresponding image.
+    Depending on the selected choice in the settings, the background will be removed partially or normal.
+
+    Attributes
+    ----------
+    image: numpy.ndarray
+        an greyscale image with background as a 2d numpy array
+    no_exception: bool
+        represents if an error occours during the fitting process
+    error: RuntimeError
+        if the background fit doesn't converge, the error will be saved
+    mod: numpy.ndarray
+        pixel values from the horizontal line, which is used for the fitting process
+    y_fit: numpy.ndarray
+        resulting values from the fitting process
+    r_squared: float
+        error square from the fitting process
+    window_app: window_app
+        the corresponding window_app which starts the thread    
+    """
+    
     def __init__(self, image, console, window_app):
         super().__init__()
-        self.console = console
         self.image = image
         self.no_exception = True
         self.error = None
@@ -43,11 +65,7 @@ class AsyncBgRemove(Thread):
             self.error = err
         return
     
-    def print_on_console_test(self, text=""):
-        self.console.config(state=tk.NORMAL)
-        self.console.insert('end', text + '\n')
-        self.console.see(tk.END)        
-        self.console.config(state=tk.DISABLED)
+    
         
 class AsyncBgRemoveForRaster(Thread):
     def __init__(self, filedirs, save_directory, filenames, window_app):
