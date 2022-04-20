@@ -1,6 +1,6 @@
 # Laue Camera
 
-This project was coded to simplify the usage of a backscattered Laue Camera from
+This project was coded to simplify the usage of a backscattered X-Ray Laue Camera from
  Photonic Science with the NTXLaue Software at the Chair of Experimental Physics 6 
  from the University of Augsburg. The NTX Software unfortunatly only runs at a 
  Windows 7 system and furthermore the setup includes four electrical 
