@@ -24,6 +24,7 @@ This project was coded to simplify the usage of a backscattered X-Ray Laue Camer
 
 - Simulation of Laue Pattern
 - Overlap of different directions from one Laue Pattern
+- Installation via pip after the documentation is completed
 
 
 ## Authors
