@@ -68,6 +68,27 @@ class AsyncBgRemove(Thread):
     
         
 class AsyncBgRemoveForRaster(Thread):
+    """
+    AsyncBgRemoveForRaster(filedirs, save_directory, filenames, window_app)
+    
+    A class for a Thread from threading, which manages the background removal from all images in a raster.
+    Depending on the selected choice in the settings, the background will be removed partially or normal 
+    and, if choosen, the dark current will be also subtracted. Saves the resulting images in the corresponding
+    save directory.
+
+    Attributes
+    ----------
+    filedirs: list
+        a list with all directories from the saved images 
+    save_directory: string
+        the dircetory where to save the resulting images
+    filenames: list
+        a list with all filenames for the saving process
+    window_app: window_app
+        the corresponding window_app which starts the thread    
+    """
+    
+    
     def __init__(self, filedirs, save_directory, filenames, window_app):
         super().__init__()
         self.filedirs = filedirs
