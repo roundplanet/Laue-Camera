@@ -112,6 +112,9 @@ class AsyncBgRemoveForRaster(Thread):
                 else:
                     return_image,_,_,_ = removeBackgroundFit2(file)
                 
+                """
+                removes the dark current, for more explanation see the 'monitor_bg_remove_thread function' in the GUI class
+                """
                 if with_polyfit:
                     print("im Polyfit")
                     diff_arr = np.copy(return_image)
@@ -147,6 +150,37 @@ class AsyncBgRemoveForRaster(Thread):
         
 
 class AsyncBgRemoveForSave(Thread):
+    """
+    AsyncBgRemoveForSave(image, path, comment, window_app, col, row, center_detect_queue=None, center_detect_save_dir=None, center_detect_bmp_save_dir=None)
+    
+    A class for a Thread from threading, which manages the background removal from the corresponding image
+    and saves the resulting image at the path.
+    Depending on the selected choice in the settings, the background will be removed partially or normal.
+    If center detection is selected, an additional image with optimized contrast is saved to the center detection
+    results.
+
+    Attributes
+    ----------
+    image: numpy.ndarray
+        an greyscale image with background as a 2d numpy array
+    path: string
+        path where the resulting image will be saved
+    comment: string
+        comment which will be added to the filename during the saving process
+    window_app: window_app
+        the corresponding window_app which starts the thread 
+    col: integer
+        number of collumn in the corresponding raster (needed for printing an error)
+    row: integer
+        number of row in the correspinding raster (needed for printing an error)
+    center_detect_queue: queue
+        queue where the image with the optimized contrast is put to be analysed by another thread
+    center_detect_save_dir: 
+        saving direction where the result of the center detection has to be saved
+    center_detect_bmp_save_dir:
+        saving direction where the result of the contrast optimization has to be saved  
+    """
+    
     def __init__(self, image, path, comment, window_app, col, row, center_detect_queue=None, center_detect_save_dir=None, center_detect_bmp_save_dir=None):
         super().__init__()
         self.image = image
@@ -163,18 +197,18 @@ class AsyncBgRemoveForSave(Thread):
         try:
             return_image,_,_,_ = removeBackgroundFit2(self.image)
             #TODO: schauen warum nur 255 bei continuous und nicht ganzes Intervall
-            """
-            print("vorher" + str(np.max(self.image)))
-            print("nachher" + str(np.max(return_image)))
-            print("vorher" + str(np.min(self.image)))
-            print("nachher" + str(np.min(return_image)))
-            """
+            
             test = np.copy(return_image)
             cv2.imwrite(self.path + "/" + time.strftime("%Y%m%d%H%M%S", time.gmtime()) + self.comment + "_removedBg_" + ".tif", test)
             if (self.center_detect_queue != None):
                 min_value = int(np.min(return_image))
                 max_value = int(np.max(return_image))
                 
+                """
+                optimizes the contrast of the picture by shifting the highest pixel value before the 8-bit conversion
+                from the maximum value of the image to the lowest value by one in each step. If the mean of the image
+                is below 70, the the optimal contrast is reached.
+                """
                 for j in range(min_value+1, max_value+1):
                     image_cache = (255.0/(float(j) - float(min_value))) * np.subtract(return_image, min_value)
                     image_cache[image_cache < 0.0] = 0.0
