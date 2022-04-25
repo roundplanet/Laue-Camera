@@ -42,7 +42,7 @@ class AsyncBgRemove(Thread):
         
     Errors
     ----------
-    raises an error-message if an error occurs during the background remove
+    prints out an error-message on the window_apps console if an error occurs during the background remove
     """
     
     def __init__(self, image, console, window_app):
@@ -93,7 +93,7 @@ class AsyncBgRemoveForRaster(Thread):
     
     Errors
     ----------
-    raises an error-message if an error occurs during the background remove
+    prints out an error-message on the window_apps console if an error occurs during the background remove
     """
     
     
@@ -194,7 +194,7 @@ class AsyncBgRemoveForSave(Thread):
         
     Errors
     ----------
-    raises an error-message if an error occurs during the background remove
+    prints out an error-message on the window_apps console if an error occurs during the background remove
     """
     
     def __init__(self, image, path, comment, window_app, col, row, center_detect_queue=None, center_detect_save_dir=None, center_detect_bmp_save_dir=None):
