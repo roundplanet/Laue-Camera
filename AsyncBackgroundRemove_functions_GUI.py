@@ -139,6 +139,10 @@ class AsyncBgRemoveForRaster(Thread):
                     cv2.imwrite(self.save_directory + self.filenames[i], return_image)
             except:
                 self.window_app.print_on_console("An Error occured while background remove from file" + str(self.filenames[i]) + ")! Please check the corresponding frame.")
+        
+        """
+        at least copy the logfile to the new raster 
+        """
         last = len(self.filedirs) - 1
         datei = open(self.filedirs[last],'r')
         text = datei.read()
