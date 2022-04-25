@@ -39,6 +39,10 @@ class AsyncBgRemove(Thread):
         error square from the fitting process
     window_app: window_app
         the corresponding window_app which starts the thread    
+        
+    Errors
+    ----------
+    raises an error-message if an error occurs during the background remove
     """
     
     def __init__(self, image, console, window_app):
@@ -86,6 +90,10 @@ class AsyncBgRemoveForRaster(Thread):
         a list with all filenames for the saving process
     window_app: window_app
         the corresponding window_app which starts the thread    
+    
+    Errors
+    ----------
+    raises an error-message if an error occurs during the background remove
     """
     
     
@@ -179,10 +187,14 @@ class AsyncBgRemoveForSave(Thread):
         number of row in the correspinding raster (needed for printing an error)
     center_detect_queue: queue
         queue where the image with the optimized contrast is put to be analysed by another thread
-    center_detect_save_dir: 
+    center_detect_save_dir: string
         saving direction where the result of the center detection has to be saved
-    center_detect_bmp_save_dir:
-        saving direction where the result of the contrast optimization has to be saved  
+    center_detect_bmp_save_dir: string
+        saving direction where the result of the contrast optimization has to be saved 
+        
+    Errors
+    ----------
+    raises an error-message if an error occurs during the background remove
     """
     
     def __init__(self, image, path, comment, window_app, col, row, center_detect_queue=None, center_detect_save_dir=None, center_detect_bmp_save_dir=None):
@@ -211,7 +223,7 @@ class AsyncBgRemoveForSave(Thread):
                 """
                 optimizes the contrast of the picture by shifting the highest pixel value before the 8-bit conversion
                 from the maximum value of the image to the lowest value by one in each step. If the mean of the image
-                is below 70, the the optimal contrast is reached.
+                is below 70, the optimal contrast is reached.
                 """
                 for j in range(min_value+1, max_value+1):
                     image_cache = (255.0/(float(j) - float(min_value))) * np.subtract(return_image, min_value)
@@ -230,6 +242,7 @@ class AsyncBgRemoveForSave(Thread):
     
     
 class AsyncBgRemoveForNewEvaluation(Thread):
+    
     def __init__(self, filelist, logfile, kontur, window_app, center_data=None):
         super().__init__()
         self.filelist = filelist
@@ -320,6 +333,32 @@ class AsyncBgRemoveForNewEvaluation(Thread):
                     
             
 class AsyncConvertionTifToBmp(Thread):
+    """
+    AsyncBgRemoveForSave(filedirs, save_directory, filenames, mean_to_scale, window_app)
+    
+    A class for a Thread from threading, which manages the background removal from the corresponding image
+    and saves the resulting image at the path.
+    Depending on the selected choice in the settings, the background will be removed partially or normal.
+    If center detection is selected, an additional image with optimized contrast is saved to the center detection
+    results.
+
+    Attributes
+    ----------
+    filedirs: list
+        a list with the paths to all images from one raster
+    save_directory: string
+        the path to the directory where the resulting images were saved
+    filenames: list
+        a list with the name of all images from the corresponding raster
+    mean_to_scale: integer
+        the mean value of the bmp image to which the tif file is optimized
+    window_app: window_app
+        the corresponding window_app which starts the thread 
+        
+    Errors
+    ----------
+    prints out an error-message on the window_apps console if an error occurs during the optimiziation
+    """
     def __init__(self, filedirs, save_directory, filenames, mean_to_scale, window_app):
         super().__init__()
         self.filedirs = filedirs
@@ -341,6 +380,12 @@ class AsyncConvertionTifToBmp(Thread):
                 min_value = int(np.min(image))
                 max_value = int(np.max(image))
                 
+                """
+                optimizes the contrast of the picture by shifting the highest pixel value before the 8-bit conversion
+                from the maximum value of the image to the lowest value by one in each step. If the mean of the image
+                is below the mean_to_scale value, the optimal contrast is reached.
+                """
+                
                 for j in range(min_value+1, max_value+1):
                     image_cache = (255.0/(float(j) - float(min_value))) * np.subtract(image, min_value)
                     image_cache[image_cache < 0.0] = 0.0
@@ -353,6 +398,9 @@ class AsyncConvertionTifToBmp(Thread):
             except:
                 self.window_app.print_on_console("An Error occured while optimizing file" + str(self.filenames[i]) + ")! Please check the corresponding frame.")   
 
+        """
+        at least copy the logfile to the new raster 
+        """
         
         last = len(self.filedirs) - 1
         datei = open(self.filedirs[last],'r')
@@ -361,18 +409,3 @@ class AsyncConvertionTifToBmp(Thread):
         with open(self.save_directory + self.filenames[last], 'w') as f:
             f.write(text)
         self.window_app.print_on_console("Convertion from a .tif- to a .bmp-raster is done!")
-            
-                
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
