@@ -252,6 +252,7 @@ def removeBackgroundFitPartial(img, filepath = "./HGE.jpg", offset_range = 20, v
     image[image<0] = 0
     minValue, maxValue,_,_ = cv2.minMaxLoc(image)
     #image = image * 256/1500
+    print(filepath)
     cv2.imwrite(filepath, image)
     ret_fig.savefig('saved_figure.png')
     plt.show()

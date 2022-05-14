@@ -45,7 +45,7 @@ class AsyncBgRemove(Thread):
     prints out an error-message on the window_apps console if an error occurs during the background remove
     """
     
-    def __init__(self, image, console, window_app):
+    def __init__(self, image, window_app):
         super().__init__()
         self.image = image
         self.no_exception = True
