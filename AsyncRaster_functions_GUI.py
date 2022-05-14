@@ -16,6 +16,10 @@ import Basicfunctions_GUI as bsf
 import AsyncBackgroundRemove_functions_GUI as abf
 
 
+"""
+Test
+"""
+
 class AsyncRaster(Thread):
     def __init__(self, hight, width, scale, exposure_time,y0,x0, window_app, stop_exposure_queue, request_kontur_queue, request_cur_det_max_queue, center_detection_queue, is_continuous = False):
         super().__init__()
