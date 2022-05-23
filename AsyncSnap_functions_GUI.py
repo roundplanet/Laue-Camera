@@ -84,6 +84,10 @@ class AsyncSnapCalculateMaxExposure(Thread):
         self.return_image = bsf.longSecondExposure(30, self.stop_exposure_queue, 31, True)
         
 class AsyncHelpGermanDisplay(Thread):
+    """
+    A class for a thread to display the german User Guide in an pdf-viewer on page 1.
+
+    """
     def __init__(self):
         super().__init__()
         
@@ -92,6 +96,10 @@ class AsyncHelpGermanDisplay(Thread):
         os.system(cmd)
         
 class AsyncHelpEnglishDisplay(Thread):
+    """
+    A class for a thread to display the english User Guide in an pdf-viewer on page 1.
+
+    """
     def __init__(self):
         super().__init__()
         
