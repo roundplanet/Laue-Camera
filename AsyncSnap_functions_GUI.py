@@ -11,7 +11,28 @@ from threading import Thread
 import tkinter as tk
 import os
 
+
+
 class AsyncSnap(Thread):
+    """
+    A class for a thread to acquire an image with the defined exposure time.
+
+    Uses the selected exposure time and the choice for an 12-bit image or an image with possible higher resolution
+    to acquire an image. If the resolution of the image has to be 12-bit, the maximum exposure time will be the maximum
+    possible exposure time defined in the main code (max_exposure_PSL_Viewer). If the sample moved, the exposure time
+    is greater than 90s and the maximum exposure time is not recalculated, an additional confirmation from the user 
+    is neccessary. Can be cancelled via the stop_exposure_queue.
+
+    Attributes
+    ----------
+    exposure_time: int
+        desired exposure time
+    window_app: window_app
+        main programm
+    stop_exposure_queue: queue.Queue
+        queue to stop the image acquisition process before termination
+    """
+    
     def __init__(self, exposure_time, window_app, stop_exposure_queue):
         super().__init__()
         self.exposure_time = exposure_time
