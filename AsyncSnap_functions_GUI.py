@@ -61,7 +61,20 @@ class AsyncSnap(Thread):
         return
         #self.var_array,_,_ = bsf.laueClient("192.168.1.10",50000,"GetImage\n",True)
         
+        
 class AsyncSnapCalculateMaxExposure(Thread):
+    """
+    A class for a thread to calculate the new maximum exposure time.
+
+    Acquires an image with 30s exposure time and calculates the corresponding 
+    maximum exposure time for the current spot. Can be cancelled via the 
+    stop_exposure_queue.
+
+    Attributes
+    ----------
+    stop_exposure_queue: queue.Queue
+        queue to stop the image acquisition process before termination
+    """
     def __init__(self, stop_exposure_queue):
         super().__init__()
         self.return_image = None
