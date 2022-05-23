@@ -11,7 +11,28 @@ from threading import Thread
 import tkinter as tk
 import os
 
+
+
 class AsyncSnap(Thread):
+    """
+    A class for a thread to acquire an image with the defined exposure time.
+
+    Uses the selected exposure time and the choice for an 12-bit image or an image with possible higher resolution
+    to acquire an image. If the resolution of the image has to be 12-bit, the maximum exposure time will be the maximum
+    possible exposure time defined in the main code (max_exposure_PSL_Viewer). If the sample moved, the exposure time
+    is greater than 90s and the maximum exposure time is not recalculated, an additional confirmation from the user 
+    is neccessary. Can be cancelled via the stop_exposure_queue.
+
+    Attributes
+    ----------
+    exposure_time: int
+        desired exposure time
+    window_app: window_app
+        main programm
+    stop_exposure_queue: queue.Queue
+        queue to stop the image acquisition process before termination
+    """
+    
     def __init__(self, exposure_time, window_app, stop_exposure_queue):
         super().__init__()
         self.exposure_time = exposure_time
@@ -40,7 +61,20 @@ class AsyncSnap(Thread):
         return
         #self.var_array,_,_ = bsf.laueClient("192.168.1.10",50000,"GetImage\n",True)
         
+        
 class AsyncSnapCalculateMaxExposure(Thread):
+    """
+    A class for a thread to calculate the new maximum exposure time.
+
+    Acquires an image with 30s exposure time and calculates the corresponding 
+    maximum exposure time for the current spot. Can be cancelled via the 
+    stop_exposure_queue.
+
+    Attributes
+    ----------
+    stop_exposure_queue: queue.Queue
+        queue to stop the image acquisition process before termination
+    """
     def __init__(self, stop_exposure_queue):
         super().__init__()
         self.return_image = None
@@ -50,6 +84,10 @@ class AsyncSnapCalculateMaxExposure(Thread):
         self.return_image = bsf.longSecondExposure(30, self.stop_exposure_queue, 31, True)
         
 class AsyncHelpGermanDisplay(Thread):
+    """
+    A class for a thread to display the german User Guide in an pdf-viewer on page 1.
+
+    """
     def __init__(self):
         super().__init__()
         
@@ -58,6 +96,10 @@ class AsyncHelpGermanDisplay(Thread):
         os.system(cmd)
         
 class AsyncHelpEnglishDisplay(Thread):
+    """
+    A class for a thread to display the english User Guide in an pdf-viewer on page 1.
+
+    """
     def __init__(self):
         super().__init__()
         
