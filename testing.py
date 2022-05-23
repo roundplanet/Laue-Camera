@@ -15,7 +15,7 @@ num = [0,2]
         
 img = np.ones((n,n))*9
 img[n//2+1,n//2+1] = 5
-
+"""
 shifted_img = np.zeros(img.shape)
 shifted_img[:-height//2,:-width//2] = img[height//2+1:,width//2+1:]
 print(shifted_img)
@@ -27,7 +27,7 @@ for i in range(num[0]+1,num[1]+2):
 
 a = [1,2,3,4,5,6,7,8,9,10]
 print(a[-0])
-        
+"""
 """
 shifted_img = np.zeros(self.img.shape)
 shifted_img[:-self.height//2,:-self.width//2] = self.img[self.height//2+1:,self.width//2+1:]
@@ -36,3 +36,11 @@ for i in range(self.num[0]+1, self.num[1]+2):
         result_shift = np.zeros(self.img.shape)
         result_shift[i:,j:] = shifted_img[:-i,:-j]
 """
+n=30
+x=np.random.randint(-100,100,(n,n))
+print(x)
+np.savetxt("test.txt", x, fmt='%4d')
+
+y = np.loadtxt("test.txt", dtype=int)
+print(y)
+print(x-y)
