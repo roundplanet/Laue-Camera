@@ -31,6 +31,7 @@ import AsyncRaster_functions_GUI as arf
 import AsyncBackgroundRemove_functions_GUI as abf
 import AsyncCenterDetection as acd
 import Frame_blueprints_GUI as fbp
+import SimulationOverlay_GUI as sol
 import socket
 
 #from scipy import ndimage
@@ -230,6 +231,10 @@ class Window_App():
         self.multiple_raster_cancel_button = None
         self.multiple_raster_list = []
         
+        #define variables for overlay simulation
+        self.overlay_simulation_is_displayed = False
+        self.overlay_simulation_object = None
+        
         # define save-shortcut
         self.root.bind('<Control-o>', self.open_file_shortcut)
         self.root.bind('<Control-r>', self.open_raster_shortcut)
@@ -270,6 +275,8 @@ class Window_App():
         self.tools_menu.add_command(label="auto kontur finding", command = self.auto_kontur_finding)
         self.tools_menu.add_separator()
         self.tools_menu.add_command(label="multiple raster", command = self.multiple_raster)
+        self.tools_menu.add_separator()
+        self.tools_menu.add_command(label="overlay simulation", command = self.display_overlay_simulation)
         self.tools_menu.add_separator()
         self.tools_menu.add_command(label="save top-bottom flipped pattern", command = self.save_tbfliped_pattern)
         self.tools_menu.add_command(label="save left-right flipped pattern", command = self.save_lrfliped_pattern)
@@ -3094,6 +3101,16 @@ class Window_App():
         multiple_raster_subframe = fbp.RasterFrame(self.MultipleRasterWindow, self.multiple_raster_h_w_var, self.multiple_raster_scale_var, 
                                                    self.multiple_raster_coord_var, self.multiple_raster_exposure_var)
         """
+        
+        
+    def display_overlay_simulation(self):
+        if self.overlay_simulation_is_displayed:
+            self.overlay_simulation_object.toplevel.lift()
+            return
+        self.overlay_simulation_is_displayed = True
+        
+        self.overlay_simulation_object = sol.OverlaySimulation(self)
+        
         
     def save_tbfliped_pattern(self):
         filename = filedialog.asksaveasfilename(initialfile = self.initialfile_name + "_tb_flipped.bmp", defaultextension='.bmp', initialdir=self.save_directory, title="Save as BMP File (default) or other filetype (add .xxx)", filetypes=[("BMP Files","*.bmp")])
